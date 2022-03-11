@@ -13,7 +13,18 @@ class UrlType(str, Enum):
 
 @app.get("/urls/")
 def get_dash_url(url: str):
-    yt_result = os.popen("youtube-dl -f \"best[height<=480]\" -g {0}".format(url))
+    yt_result = os.popen(
+        "youtube-dl -f \"bestvideo[height<=480]+bestaudio/best[height<=480]\" --merge-output-format mp4  -g {0}".format(
+            url))
+    new_url = yt_result.read().strip()
+
+    return {"url": new_url}
+
+
+@app.get("/audio")
+def download_audio(url: str):
+    yt_result = os.popen(
+        "youtube-dl -x --audio-format mp3 {0}".format(url))
     new_url = yt_result.read().strip()
 
     return {"url": new_url}
