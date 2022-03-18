@@ -23,8 +23,7 @@ def get_dash_url(url: str):
 
 @app.get("/audio")
 def download_audio(url: str):
-    yt_result = os.popen(
-        "youtube-dl -x --audio-format mp3 {0}".format(url))
+    yt_result = os.popen("youtube-dl -f 'bestaudio[ext=m4a]' -g {0}".format(url))
     new_url = yt_result.read().strip()
 
     return {"url": new_url}
